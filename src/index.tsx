@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { render } from "react-dom";
+import TableTest from "./components/TestTable/TableTest";
 
-ReactDOM.render(
-  <React.StrictMode>
+const client = new ApolloClient({
+  uri: "http://localhost:5050",
+  cache: new InMemoryCache(),
+});
+
+const App = () => {
+  return (
+    <div>
+      <h2>My first Apollo app 🚀</h2>
+    </div>
+  );
+};
+
+render(
+  <ApolloProvider client={client}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <TableTest />
+  </ApolloProvider>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
