@@ -2,9 +2,18 @@ import Menu from "../Menu";
 import Header from "../Header";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useQuery } from "@apollo/client";
+import { GetSocios } from "../../CRUD/socio";
+
 
 
 const Socios = () => {
+
+    const { loading, error, data } = useQuery(GetSocios);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+        
     return (
         <div className="d-flex flex-column h-100">
             <div className="wrapper d-flex" id="wrap">
@@ -51,6 +60,7 @@ const Socios = () => {
                         </div>
                         <div className="bg-white shadow-primary rounded-15 mb-3">
                             <div className="tableHolder mt-4">
+                                
                                 <table className="table table-hover table-borderless">
                                     <thead className="table-primary">
                                         <tr>
@@ -60,21 +70,18 @@ const Socios = () => {
                                             <th>Estado</th>
                                         </tr>
                                     </thead>
+                                    {data.test.map(({id, cedula, nombre, estado}) => (
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>123456789</td>
-                                            <td>Juan Perez</td>
-                                            <td>Activo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>123456789</td>
-                                            <td>Juan Perez</td>
-                                            <td>Activo</td>
+                                        <tr key = {id}>
+                                            <td>{id}</td>
+                                            <td>{cedula}</td>
+                                            <td>{nombre}</td>
+                                            <td>{estado}</td>
                                         </tr>
                                     </tbody>
+                                    ))}
                                 </table>
+                                
                             </div>
                         </div>
                     </div>
