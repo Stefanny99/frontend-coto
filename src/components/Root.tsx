@@ -1,25 +1,29 @@
+import { Route, Routes } from "react-router-dom";
+import { useGlobalState } from "../GlobalStateProvider";
+import Login from "./Login";
+import Socios from "./Socios";
 import "./styles.scss";
 import "bootstrap/dist/js/bootstrap.bundle.js";
-import Login from "./Login";
-// import Home from "./Home";
-// import { Routes, Route } from "react-router-dom";
-import Socios from "./Socios";
+import { useEffect } from "react";
 
 const Root = () => {
-  const isAuthenticated = true;
-  return !isAuthenticated ? (
-    <Login />
-  ) : (
-    <>
-      {/* <Routes> */}
-      {/* <Route path="/"> */}
-      {/* <Home /> */}
-      {/* </Route> */}
-      {/* <Route path="/socios"> */}
-      <Socios />
-      {/* </Route> */}
-      {/* </Routes> */}
-    </>
+  const { setState } = useGlobalState();
+
+  // se da un estado inicial al state global
+  // cambia hasta que hace login
+  useEffect(() => {
+    setState({
+      authenticated: false,
+      user: undefined,
+    });
+  }, []);
+
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/socios" element={<Socios />} />
+      <Route path="*" element={<h1>404 - PAGE NOT FOUND</h1>} />
+    </Routes>
   );
 };
 
