@@ -1,0 +1,159 @@
+$gray-dark: #343a40;
+$primary: #4659E4;
+$light-primary: #ebeeff;
+$dark-primary: #3347e0;
+$secondary: #f0bc4d;
+$light: #F9FAFE;
+$light-alt: #f0f2fa;
+$gray: #afafaf;
+$dark: #212529;
+$info: #97a3ff;
+@import '~bootstrap/scss/bootstrap.scss';
+
+.wrapperLogin{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.login-form{
+    width: 95%;
+    height: 80vh;
+    background-color: $light;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 500px) {
+    .login-form{
+        width: 400px;
+        height: 50vh;
+    }
+}
+
+.form-control{
+    border-radius: 5px;
+    outline: none !important;
+    &:focus{
+        box-shadow: none !important;
+    }
+}
+
+.wrapper{
+    overflow-x: hidden;
+    transition: all .25s; 
+}
+
+.menu-header{
+    height: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+}
+.shadow-primary{
+    box-shadow: 0 5px 20px -2px rgba(51, 49, 145, 0.1);
+}
+.rounded-15{
+    border-radius: 15px;
+}
+.sidebar-wrapper {
+    position: relative;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	margin-left: -15rem;
+    -webkit-transition: all .25s ;
+    -moz-transition: all .25s ;
+    -o-transition: all .25s ;
+    transition: all .25s ; 
+}
+.sidebar-wrapper .list-group {
+    transition: all .25s ; 
+    width: 15rem;
+    padding: 10px;
+    overflow-y: auto;
+}
+.wrapper.toggled .sidebar-wrapper {
+    position: sticky !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    margin-left: 0; 
+}
+.page-content-wrapper {
+    min-width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-color: $light;
+}
+@media (min-width: 770px) {
+    .sidebar-wrapper {
+        top: 0;
+        left: 0;
+        height: 100vh;
+        position: sticky;
+        margin-left: 0; 
+    }
+    .page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+        height: 100vh;
+    }
+    .wrapper.toggled .sidebar-wrapper {
+        position: relative !important;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        margin-left: -15rem; 
+        transition: all .25s ; 
+    } 
+}
+.hover-menu-items-parent {
+    background-color: $primary;
+}
+.menu-toggle{
+    outline: none !important;
+    box-shadow: none !important;
+}
+.menu-items-var{
+    background-color: $primary !important;
+    color: $light !important;
+    border:none !important;
+    margin-bottom: 1.1rem;
+    border-radius: 10px !important;
+    font-size: 20px !important;
+    &:hover{
+        background: linear-gradient(130deg, #a6b0f7 0%, #828ee9 100%) !important; 
+        transition: all 5s ease 3s;
+        color: $light !important;
+    }
+    &:focus{
+        background: linear-gradient(130deg, #a6b0f7 0%, #828ee9 100%) !important;
+        color: $light !important; 
+    }
+    &.active{
+        background: linear-gradient(130deg, #a6b0f7 0%, #828ee9 100%) !important; 
+        transition: all 5s ease 3s;
+        color: $light !important;
+    }
+}
+.table-custom{
+    background-color: $light-primary;
+}
+th:nth-child(1){
+    border-top-left-radius: 15px;
+}
+th:nth-last-child(1){
+    border-top-right-radius: 15px;
+}
+.tableHolder{
+    min-height: 50vh;
+    overflow-y: auto;
+}

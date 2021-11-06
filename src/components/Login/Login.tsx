@@ -1,4 +1,3 @@
-import "./login.scss";
 import { faShoppingBasket, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {Animated} from "react-animated-css";
@@ -6,7 +5,7 @@ import {Animated} from "react-animated-css";
 
 const Login = () => {
     return (
-        <div className="wrapper">
+        <div className="wrapperLogin">
             <Animated animationIn="zoomIn" animationOut="fadeOut" isVisible={true}>
                 <div className="login-form">
                     <div className="form-header mb-2">
@@ -15,9 +14,9 @@ const Login = () => {
                     </div>
                     <form>
                         <div className="mb-3">
-                            <label htmlFor="email" className="form-label fw-bold">Correo</label>
-                            <input type="email" className="form-control" id="email" placeholder="Correo Electrónico" name="email" />
-                            <div id="emailHelp" className="form-text">No compartiremos tu correo con nadie mas.</div>
+                            <label htmlFor="usuario" className="form-label fw-bold">Usuario</label>
+                            <input type="text" className="form-control" id="usuario" placeholder="Nombre de usuario" name="usuario" />
+                            <div id="usuarioHelp" className="form-text">No compartiremos tu correo con nadie mas.</div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label fw-bold">Contraseña</label>
