@@ -1,10 +1,10 @@
 import { Route } from "react-router-dom";
 import Tabla from "./tabla";
+import Login from "./Login";
 const Root = () => {
-    const isAuthenticated = true;
+    const isAuthenticated = false;
     return !isAuthenticated ? (
-        // <Register />
-        <h1>login</h1>
+        <Login/>
       ) : (
         <>
             <Route path="/">
