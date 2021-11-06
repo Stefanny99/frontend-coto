@@ -9,7 +9,7 @@ import React, {
 export interface UserEntity {
   id: string;
   nombre: string;
-  usuario: string;
+  rol: string;
 }
 
 export interface GlobalStateInterface {

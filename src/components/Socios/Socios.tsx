@@ -83,7 +83,7 @@ const Socios = () => {
                           <th>Estado</th>
                         </tr>
                       </thead>
-                      {data.test.map(({ id, cedula, nombre, estado }) => (
+                      {data?.test.map(({ id, cedula, nombre, estado }) => (
                         <tbody>
                           <tr key={id}>
                             <td>{id}</td>
