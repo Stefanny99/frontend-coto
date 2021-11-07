@@ -10,13 +10,34 @@ import { LOGIN } from "../../CRUD/usuario";
 import { useGlobalState } from "../../GlobalStateProvider";
 import swal from "sweetalert";
 import { useEffect } from "react";
+import { Formik, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import "bootstrap/dist/css/bootstrap.css";
+
+const initialState = {
+  usuario: "",
+  contrasena: "",
+};
 
 const Login = () => {
   const navigate = useNavigate();
+
   const {
     state: { authenticated },
     setState,
   } = useGlobalState();
+
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/socios");
+    }
+  }, [authenticated]);
+
+  const loginSchema = Yup.object().shape({
+    usuario: Yup.string().required("Este campo es obligatorio"),
+    contrasena: Yup.string().required("Este campo es obligatorio"),
+  });
+
   const [callLogin] = useLazyQuery(LOGIN, {
     onCompleted: ({ user }) => {
       setState({ authenticated: true, user: user });
@@ -26,28 +47,13 @@ const Login = () => {
         title: "¡Error!",
         text: message,
         icon: "error",
-        timer: 4000,
+        timer: 5000,
       });
     },
   });
 
-  useEffect(() => {
-    if (authenticated) {
-      navigate("/socios");
-    }
-  }, [authenticated]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    //validar que los campos estén llenos primero, luego:
-    // login({variables: {username: inputs.username, password: inputs.password} });
-    callLogin({
-      variables: {
-        usuario: "admin",
-        contrasena: "admin",
-      },
-    });
+  const handleSubmit = (values) => {
+    callLogin({ variables: { ...values } });
   };
 
   return (
@@ -61,37 +67,72 @@ const Login = () => {
             </h1>
             <p>Cooperativa El Ahorro</p>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="usuario" className="form-label fw-bold">
-                Usuario
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="usuario"
-                placeholder="Nombre de usuario"
-                name="usuario"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label fw-bold">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                placeholder="Contraseña"
-                name="pass"
-              />
-            </div>
-            <div className="d-grid gap-2">
-              <button type="submit" className="btn btn-primary">
-                Iniciar Sesión <FontAwesomeIcon icon={faArrowRight} />
-              </button>
-            </div>
-          </form>
+          <Formik
+            initialValues={initialState}
+            validationSchema={loginSchema}
+            onSubmit={async (values) => {
+              await handleSubmit(values);
+            }}
+          >
+            {({ touched, errors, isSubmitting, handleSubmit }) => (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  isSubmitting = true;
+                  handleSubmit(e);
+                }}
+              >
+                <div className="mb-3">
+                  <label htmlFor="usuario" className="form-label fw-bold">
+                    Usuario
+                  </label>
+                  <Field
+                    type="text"
+                    className={`form-control ${
+                      touched.usuario && errors.usuario ? "is-invalid" : ""
+                    }`}
+                    id="usuario"
+                    placeholder="Nombre de usuario"
+                    name="usuario"
+                  />
+                  <ErrorMessage
+                    component="div"
+                    name="usuario"
+                    className="invalid-feedback"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label fw-bold">
+                    Contraseña
+                  </label>
+                  <Field
+                    type="password"
+                    className={`form-control ${
+                      touched.usuario && errors.usuario ? "is-invalid" : ""
+                    }`}
+                    id="password"
+                    placeholder="Contraseña"
+                    name="contrasena"
+                  />
+                  <ErrorMessage
+                    component="div"
+                    name="contrasena"
+                    className="invalid-feedback"
+                  />
+                </div>
+                <div className="d-grid gap-2">
+                  <h2>{isSubmitting ? "true" : "false"}</h2>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting}
+                  >
+                    Iniciar Sesión <FontAwesomeIcon icon={faArrowRight} />
+                  </button>
+                </div>
+              </form>
+            )}
+          </Formik>
         </div>
       </Animated>
     </div>
