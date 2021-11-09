@@ -7,6 +7,9 @@ import { GetSocios } from "../../CRUD/socio";
 import { useGlobalState } from "../../GlobalStateProvider";
 import { useNavigate } from "react-router-dom";
 
+import { useState } from "react";
+
+
 const Socios = () => {
   const navigate = useNavigate();
 
@@ -17,18 +20,26 @@ const Socios = () => {
   const [callGetSocios, { called, loading, error, data }] =
     useLazyQuery(GetSocios);
 
+  // document.addEventListener("DOMContentLoaded", function () {
+  //   $(".menu-toggle").click(function (e) {
+  //       e.preventDefault();
+  //       $("#wrap").toggleClass("toggled");
+  //   });
+  // });
+
+  const [toggled, setToggle] = useState(false);
+
   if (!authenticated) navigate("/login");
   else {
     callGetSocios();
-    if (called && loading) return <p>Loading...</p>;
+    if (called && loading) return <div className="spinner-border" role="status"><span className="visually-hidden">Loading...</span></div>;
     if (error) return <p>Error :(</p>;
   }
-
   return (
     <>
       {authenticated && (
         <div className="d-flex flex-column h-100">
-          <div className="wrapper d-flex" id="wrap">
+          <div className={`${toggled ? 'toggled' : ''} wrapper d-flex`} id="wrap">
             <Menu></Menu>
             <div className="page-content-wrapper">
               <Header></Header>
@@ -74,7 +85,7 @@ const Socios = () => {
                 </div>
                 <div className="bg-white shadow-primary rounded-15 mb-3">
                   <div className="tableHolder mt-4">
-                    <table className="table table-hover table-borderless">
+                    <table className="table table-hover table-borderless" id="table">
                       <thead className="table-primary">
                         <tr>
                           <th>#</th>
