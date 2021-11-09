@@ -3,6 +3,7 @@ import { useGlobalState } from "../GlobalStateProvider";
 import Login from "./Login";
 import Socios from "./Socios";
 import "./styles.scss";
+import $ from 'jquery';
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import { useEffect } from "react";
 
