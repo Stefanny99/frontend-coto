@@ -29,7 +29,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authenticated) {
-      navigate("/socios");
+      navigate("/inventario");
     }
   }, [authenticated]);
 
