@@ -5,7 +5,7 @@ import Root from "./components/Root";
 import { GlobalStateProvider } from "./GlobalStateProvider";
 
 const client = new ApolloClient({
-  uri: "http://localhost:5050",
+  uri: "  https://backend-coto.herokuapp.com/",
   cache: new InMemoryCache(),
 });
 
