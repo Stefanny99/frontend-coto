@@ -10,3 +10,13 @@ export const GetSocios = gql`
     }
   }
 `;
+
+export const PostSocios = gql`
+  mutation registrarSocio($socio: SocioInput!){
+    registrarSocio(socio: $socio){
+      cedula
+      nombre
+      estado
+    }
+  }
+`;

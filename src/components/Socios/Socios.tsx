@@ -2,14 +2,33 @@ import Menu from "../Menu";
 import Header from "../Header";
 import { faPlus, faSave, faTimes, faEllipsisV, faHashtag, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@apollo/client";
-import { GetSocios } from "../../CRUD/socio";
+import { useMutation, useQuery } from "@apollo/client";
+import { GetSocios, PostSocios } from "../../CRUD/socio";
 import { useGlobalState } from "../../GlobalStateProvider";
 import { useNavigate } from "react-router-dom";
+import { Formik, Field, ErrorMessage } from "formik";
+import swal from "sweetalert";
 
 
 const Socios = () => {
 	const navigate = useNavigate();
+
+	const initialState = {
+		cedula: '',
+		nombre: '',
+		estado: 'A'
+	};
+
+	const [registrarSocios] = useMutation(PostSocios, {
+		onError: ({ message }) => {
+			swal({
+				title: "¡Error!",
+				text: message,
+				icon: "error",
+				timer: 5000,
+			});
+		},
+	});
 
 	const {
 		state: { authenticated },
@@ -17,17 +36,23 @@ const Socios = () => {
 
 	var socios = new Map();
 
-	const {called, loading, data, error } = useQuery(GetSocios,{
+	const { called, loading, data, error } = useQuery(GetSocios, {
 		onCompleted: (data) => {
-			data.test.forEach((d)=>{
-				socios.set(d.id,d);
+			data.test.forEach((d) => {
+				socios.set(d.id, d);
 			});
 		},
 	});
+
+	const handleSubmit = (values) => {
+		registrarSocios({ variables: { ...values } });
+		
+	};
+
 	// TODO: Error handling del formulario
 	// (function () {
 	// 	var forms = document.querySelectorAll('.needs-validation')
-	  
+
 	// 	Array.prototype.slice.call(forms)
 	// 	  .forEach(function (form) {
 	// 		form.addEventListener('submit', function (event) {
@@ -35,11 +60,11 @@ const Socios = () => {
 	// 			event.preventDefault()
 	// 			event.stopPropagation()
 	// 		  }
-	  
+
 	// 		  form.classList.add('was-validated')
 	// 		}, false)
 	// 	  })
-		  
+
 	// })();
 	// TODO: Cuando se abra el editar mostarar los datos en el modal
 	// var edit = document.getElementById('edit');
@@ -49,22 +74,22 @@ const Socios = () => {
 	// 	var socio = socios.get(id);
 	// 	var title = document.getElementById('addModalLabel');
 	// 	title!.innerHTML = `Editar ${socio.nombre}`;
-		
+
 	// });
-	
-	
+
+
 	if (called && loading) return <div className="spinner-border" role="status"><span className="visually-hidden">Loading...</span></div>;
 	if (error) return <p>Error :(</p>;
 
-	if (!authenticated) {
+	/*if (!authenticated) {
 		navigate("/login")
 	}
 	else {
 		
-	}
+	}*/
 	return (
 		<>
-			{authenticated && (
+			{//authenticated && (
 
 				<div className="d-flex flex-column h-100">
 					<div className=" wrapper d-flex" id="wrap">
@@ -129,7 +154,7 @@ const Socios = () => {
 														<td className="align-middle fw-bold text-muted">{id}</td>
 														<td className="align-middle fw-bold ">{cedula}</td>
 														<td className="align-middle fw-bold text-muted">{nombre}</td>
-														<td className="align-middle"><h5 className="mb-0"><span className={`badge bg-${estado === "A"? 'success' : 'danger'}`}>{estado === "A"? 'Activo' : 'Inactivo'}</span></h5></td>
+														<td className="align-middle"><h5 className="mb-0"><span className={`badge bg-${estado === "A" ? 'success' : 'danger'}`}>{estado === "A" ? 'Activo' : 'Inactivo'}</span></h5></td>
 														<td className="align-middle" data-bs-id={id} data-bs-toggle="modal" data-bs-target="#edit">
 															<button type="button" className="btn btn-light btn-c">
 																<FontAwesomeIcon icon={faEllipsisV} />
@@ -169,7 +194,7 @@ const Socios = () => {
 									<div className="">
 										<small className="mb-0 me-4 d-block">Estado</small>
 										<label className="switch-cus" htmlFor="estadoSwitch">
-											<input type="checkbox" id="estadoSwitch"/>
+											<input type="checkbox" id="estadoSwitch" />
 											<span className="slider-cus round-cus"></span>
 										</label>
 									</div>
@@ -188,25 +213,50 @@ const Socios = () => {
 									<button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div className="modal-body">
-									<form action="" className="row g-3 needs-validation" id="formAgregar" noValidate>
-										<div className="col-md-6">
-											<div className="mb-3">
-												<label htmlFor="cedula" className="form-label fw-bold">Cedula</label>
-												<input type="number" className="form-control" id="cedula" name="cedula" aria-describedby="cedulaHelp" minLength={9} required/>
-												<div id="cedulaHelp" className="form-text">Sin guines o espacios eg. 112345678</div>
-												<div className="valid-feedback">Formato Correcto</div>
-												<div className="invalid-feedback">Formato Incorrecto</div>
-											</div>
-										</div>
-										<div className="col-md-6">
-											<div className="mb-3">
-												<label htmlFor="nombre" className="form-label fw-bold">Nombre</label>
-												<input type="text" className="form-control" id="nombre" required/>
-												<div className="valid-feedback">Correcto</div>
-												<div className="invalid-feedback">Campo Incompleto</div>
-											</div>
-										</div>
-									</form>				
+									<Formik
+										initialValues={initialState}
+										onSubmit={async (values) => {
+											await handleSubmit(values);
+										}}
+									>
+										{({ isSubmitting, handleSubmit }) => (
+
+											<form onSubmit={(e) => {
+												e.preventDefault();
+												isSubmitting = true;
+												handleSubmit(e);
+											}} className="row g-3 needs-validation" id="formAgregar" noValidate>
+
+												<div className="col-md-6">
+													<div className="mb-3">
+														<label htmlFor="cedula" className="form-label fw-bold">Cedula</label>
+														<Field className="form-control" type="number" id="cedula" name="cedula" aria-describedby="cedulaHelp" minLength={9} required />
+														<ErrorMessage
+															component="div"
+															name="usuario"
+															className="invalid-feedback"
+														/>
+														<div id="cedulaHelp" className="form-text">Sin guines o espacios eg.112345678</div>
+														<div className="valid-feedback">Formato Correcto</div>
+														<div className="invalid-feedback">Formato Incorrecto</div>
+													</div>
+												</div>
+												<div className="col-md-6">
+													<div className="mb-3">
+														<label htmlFor="nombre" className="form-label fw-bold">Nombre</label>
+														<Field type="text" className="form-control" id="nombre" required name="nombre"/>
+														<ErrorMessage
+															component="div"
+															name="usuario"
+															className="invalid-feedback"
+														/>
+														<div className="valid-feedback">Correcto</div>
+														<div className="invalid-feedback">Campo Incompleto</div>
+													</div>
+												</div>
+											</form>
+										)}
+									</Formik>
 								</div>
 								<div className="modal-footer border-0">
 									<button type="button" className="btn btn-danger" data-bs-dismiss="modal"><FontAwesomeIcon icon={faTimes} className="me-2" />Cancelar</button>
@@ -216,7 +266,7 @@ const Socios = () => {
 						</div>
 					</div>
 				</div>
-			)}
+			/*)*/}
 		</>
 	);
 };
