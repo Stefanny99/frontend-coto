@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery } from "@apollo/client";
-import { GetSocios, PostSocios } from "../../CRUD/socio";
+import { OBTENER_SOCIOS, REGISTRAR_SOCIO } from "../../CRUD/socio";
 import { useGlobalState } from "../../GlobalStateProvider";
 import { useNavigate } from "react-router-dom";
 import { Formik, Field, ErrorMessage } from "formik";
@@ -25,7 +25,7 @@ const Socios = () => {
     estado: "A",
   };
 
-  const [registrarSocios] = useMutation(PostSocios, {
+  const [registrarSocios] = useMutation(REGISTRAR_SOCIO, {
     onCompleted: ({ registrado }) => {
       if (registrado) {
         swal({
@@ -58,7 +58,7 @@ const Socios = () => {
 
   var socios = new Map();
 
-  const { called, loading, data, error } = useQuery(GetSocios, {
+  const { called, loading, data, error } = useQuery(OBTENER_SOCIOS, {
     onCompleted: (data) => {
       data.test.forEach((d) => {
         socios.set(d.id, d);
