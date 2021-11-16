@@ -6,7 +6,7 @@ import Socios from "../components/Socios";
 const ProtectedRoutes = () => (
   <Switch>
     <Route exact path="/">
-      {/*<Home />*/}
+      <Socios />
     </Route>
     <Route path="/socios">
       <Socios />

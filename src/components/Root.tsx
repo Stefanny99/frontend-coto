@@ -27,6 +27,8 @@ const Root = () => {
   useEffect(() => {
     if (cookies.authenticated) {
       obtenerUsuario({ variables: { id: cookies.userID } });
+    } else {
+      setState({ authenticated: false, user: undefined });
     }
   }, []);
 
