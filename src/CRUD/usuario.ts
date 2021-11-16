@@ -10,6 +10,16 @@ export const LOGIN = gql`
   }
 `;
 
+export const OBTENER_USUARIO = gql`
+  query usuarioPorId($id: ID) {
+    user: usuarioPorId(id: $id) {
+      id
+      nombre
+      rol
+    }
+  }
+`;
+
 export const EDITAR_USUARIO = gql`
   mutation editarUsuario($usuario: UsuarioInput!) {
     editado: editarUsuario(usuario: $usuario)

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@apollo/client";
 import { OBTENER_INVENTARIO } from "../../CRUD/inventario";
@@ -168,23 +168,32 @@ const Inventario = () => {
       });
     },
   });
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    //document.title = `You clicked ${count} times`;
+    (function () {
+      var forms = document.querySelectorAll(".needs-validation");
+
+      Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener(
+          "submit",
+          function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            form.classList.add("was-validated");
+          },
+          false
+        );
+      });
+    })();
+  });
+
   // TODO: Error handling del formulario
-  // (function () {
-  // 	var forms = document.querySelectorAll('.needs-validation')
 
-  // 	Array.prototype.slice.call(forms)
-  // 	  .forEach(function (form) {
-  // 		form.addEventListener('submit', function (event) {
-  // 		  if (!form.checkValidity()) {
-  // 			event.preventDefault()
-  // 			event.stopPropagation()
-  // 		  }
-
-  // 		  form.classList.add('was-validated')
-  // 		}, false)
-  // 	  })
-
-  // })();
   // TODO: Cuando se abra el editar mostarar los datos en el modal
   // var edit = document.getElementById('edit');
   // edit!.addEventListener('show.bs.modal', function (event : any) {

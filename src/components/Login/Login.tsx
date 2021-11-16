@@ -7,10 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Animated } from "react-animated-css";
 import { LOGIN } from "../../CRUD/usuario";
 import { useGlobalState } from "../../GlobalStateProvider";
-import swal from "sweetalert";
-import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import swal from "sweetalert";
 import "bootstrap/dist/css/bootstrap.css";
 
 const initialState = {
@@ -19,10 +19,9 @@ const initialState = {
 };
 
 const Login = () => {
-  const {
-    state: { authenticated },
-    setState,
-  } = useGlobalState();
+  const { setState } = useGlobalState();
+
+  const [_, setCookie] = useCookies(["userID", "authenticated"]);
 
   const loginSchema = Yup.object().shape({
     usuario: Yup.string().required("Este campo es obligatorio"),
@@ -32,6 +31,8 @@ const Login = () => {
   const [callLogin] = useLazyQuery(LOGIN, {
     onCompleted: ({ user }) => {
       setState({ authenticated: true, user: user });
+      setCookie("userID", user.id, { path: "/" });
+      setCookie("authenticated", true, { path: "/" });
     },
     onError: ({ message }) => {
       swal({
