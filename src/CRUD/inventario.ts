@@ -19,19 +19,19 @@ export const OBTENER_INVENTARIO = gql`
 `;
 
 export const REGISTRAR_INVENTARIO = gql`
-  registrarInventario($inventario: InventarioInput!){
+  mutation registrarInventario($inventario: InventarioInput!) {
     registrado: registrarInventario(inventario: $inventario)
   }
 `;
 
 export const EDITAR_INVENTARIO = gql`
-  editarInventario($inventario: InventarioInput!){
+  mutation editarInventario($inventario: InventarioInput!) {
     editado: editarInventario(inventario: $inventario)
   }
 `;
 
 export const DESACTIVAR_INVENTARIO = gql`
-  desactivarInventario($id: ID!){
+  mutation desactivarInventario($id: ID!) {
     desactivado: desactivarInventario(id: $id)
   }
 `;

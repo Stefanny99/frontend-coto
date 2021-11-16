@@ -18,13 +18,13 @@ export const REGISTRAR_SOCIO = gql`
 `;
 
 export const EDITAR_SOCIO = gql`
-  editarSocio($socio: SocioInput!){
+  mutation editarSocio($socio: SocioInput!) {
     editado: editarSocio(socio: $socio)
   }
 `;
 
 export const DESACTIVAR_SOCIO = gql`
-  desactivarSocio($id: ID!){
+  mutation desactivarSocio($id: ID!) {
     desactivado: desactivarSocio(id: $id)
   }
 `;

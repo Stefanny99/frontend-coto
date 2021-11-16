@@ -11,13 +11,13 @@ export const LOGIN = gql`
 `;
 
 export const EDITAR_USUARIO = gql`
-  editarUsuario($usuario: UsuarioInput!){
+  mutation editarUsuario($usuario: UsuarioInput!) {
     editado: editarUsuario(usuario: $usuario)
   }
 `;
 
 export const ELIMINAR_USUARIO = gql`
-  eliminarUsuario($id: ID!){
+  mutation eliminarUsuario($id: ID!) {
     eliminado: eliminarUsuario(id: $id)
   }
 `;
