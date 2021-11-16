@@ -7,6 +7,7 @@ import $ from 'jquery';
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import { useEffect } from "react";
 import Inventario from "./Inventario";
+import Ordenes from "./Ordenes";
 
 const Root = () => {
   const { setState } = useGlobalState();
@@ -25,6 +26,7 @@ const Root = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/socios" element={<Socios />} />
       <Route path="/inventario" element={<Inventario />} />
+      <Route path="/ordenes" element={<Ordenes />} />
       <Route path="*" element={<h1>404 - PAGE NOT FOUND</h1>} />
     </Routes>
   );
