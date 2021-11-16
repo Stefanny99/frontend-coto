@@ -5,7 +5,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Animated } from "react-animated-css";
-import { useNavigate } from "react-router-dom";
 import { LOGIN } from "../../CRUD/usuario";
 import { useGlobalState } from "../../GlobalStateProvider";
 import swal from "sweetalert";
@@ -20,18 +19,10 @@ const initialState = {
 };
 
 const Login = () => {
-  const navigate = useNavigate();
-
   const {
     state: { authenticated },
     setState,
   } = useGlobalState();
-
-  useEffect(() => {
-    if (authenticated) {
-      navigate("/inventario");
-    }
-  }, [authenticated]);
 
   const loginSchema = Yup.object().shape({
     usuario: Yup.string().required("Este campo es obligatorio"),

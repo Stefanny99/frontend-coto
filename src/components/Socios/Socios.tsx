@@ -12,13 +12,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery } from "@apollo/client";
 import { OBTENER_SOCIOS, REGISTRAR_SOCIO } from "../../CRUD/socio";
 import { useGlobalState } from "../../GlobalStateProvider";
-import { useNavigate } from "react-router-dom";
 import { Formik, Field, ErrorMessage } from "formik";
 import swal from "sweetalert";
 
 const Socios = () => {
-  const navigate = useNavigate();
-
   const initialState = {
     cedula: "",
     nombre: "",
@@ -105,13 +102,6 @@ const Socios = () => {
       </div>
     );
   if (error) return <p>Error :(</p>;
-
-  /*if (!authenticated) {
-		navigate("/login")
-	}
-	else {
-		
-	}*/
   return (
     <>
       {

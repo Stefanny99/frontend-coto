@@ -1,12 +1,13 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { useGlobalState } from "../GlobalStateProvider";
-import Login from "./Login";
-import Socios from "./Socios";
+import { useEffect } from "react";
 import "./styles.scss";
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
-import { useEffect } from "react";
-import Inventario from "./Inventario";
+import PublicRoute from "../routes/PublicRoute";
+import PrivateRoute from "../routes/PrivateRute";
+import ProtectedRoutes from "../routes/ProtectedRoutes";
+import Login from "./Login";
 
 const Root = () => {
   const {
@@ -36,13 +37,13 @@ const Root = () => {
         <h1>cargando...</h1>
       ) : (
         <Switch>
-          <PublicRoute exact path="/login" isAuthenticated={isAuthenticated}>
-            <LogIn />
+          <PublicRoute exact path="/login" isAuthenticated={authenticated}>
+            <Login />
           </PublicRoute>
-          <PublicRoute exact path="/register" isAuthenticated={isAuthenticated}>
+          {/*<PublicRoute exact path="/register" isAuthenticated={authenticated}>
             <Register />
-          </PublicRoute>
-          <PrivateRoute path="/" isAuthenticated={isAuthenticated}>
+          </PublicRoute>*/}
+          <PrivateRoute path="/" isAuthenticated={authenticated}>
             <ProtectedRoutes />
           </PrivateRoute>
           <Route path="*">
