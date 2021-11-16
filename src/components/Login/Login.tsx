@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import {
   faShoppingBasket,
@@ -8,7 +9,6 @@ import { Animated } from "react-animated-css";
 import { LOGIN } from "../../CRUD/usuario";
 import { useGlobalState } from "../../GlobalStateProvider";
 import swal from "sweetalert";
-import { useEffect } from "react";
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "bootstrap/dist/css/bootstrap.css";
@@ -29,9 +29,12 @@ const Login = () => {
     contrasena: Yup.string().required("Este campo es obligatorio"),
   });
 
+  const history = useHistory();
+
   const [callLogin] = useLazyQuery(LOGIN, {
     onCompleted: ({ user }) => {
       setState({ authenticated: true, user: user });
+      history.push("/socios");
     },
     onError: ({ message }) => {
       swal({
@@ -112,7 +115,6 @@ const Login = () => {
                   />
                 </div>
                 <div className="d-grid gap-2">
-                  <h2>{isSubmitting ? "true" : "false"}</h2>
                   <button
                     type="submit"
                     className="btn btn-primary"

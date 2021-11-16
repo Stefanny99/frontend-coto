@@ -25,141 +25,6 @@ const Inventario = () => {
   var inventario = new Map();
 
   // ! Borrar Datos de prueba
-  var dataprueba = {
-    test: [
-      {
-        id: 1,
-        codigo: "123",
-        nombre: "Chicky",
-        descripcion: "Galletas Chicky Pozuelo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 2,
-        codigo: "456",
-        nombre: "Maria",
-        descripcion: "Galletas Maria Pozuelo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 3,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 4,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 5,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 6,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 7,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 8,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 9,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-      {
-        id: 10,
-        codigo: "789",
-        nombre: "Oreo",
-        descripcion: "Galletas Oreo",
-        precio: "200",
-        categoria: "Galletas",
-        cantidad: "6",
-        imagen: "url",
-        estado: "A",
-        whatsapp: "wp://84018895",
-        correo: "example.com",
-      },
-    ],
-  };
-
   const { called, loading, data, error } = useQuery(OBTENER_INVENTARIO, {
     onCompleted: (data) => {
       console.log(data);
@@ -171,7 +36,6 @@ const Inventario = () => {
   // TODO: Error handling del formulario
   // (function () {
   // 	var forms = document.querySelectorAll('.needs-validation')
-
   // 	Array.prototype.slice.call(forms)
   // 	  .forEach(function (form) {
   // 		form.addEventListener('submit', function (event) {
@@ -179,21 +43,18 @@ const Inventario = () => {
   // 			event.preventDefault()
   // 			event.stopPropagation()
   // 		  }
-
   // 		  form.classList.add('was-validated')
   // 		}, false)
   // 	  })
-
   // })();
   // TODO: Cuando se abra el editar mostarar los datos en el modal
   // var edit = document.getElementById('edit');
   // edit!.addEventListener('show.bs.modal', function (event : any) {
   // 	var button = event.relatedTarget;
   // 	var id = button.getAttribute('data-bs-id')
-  // 	var socio = socios.get(id);
+  // 	var inventario = inventario.get(id);
   // 	var title = document.getElementById('addModalLabel');
   // 	title!.innerHTML = `Editar ${socio.nombre}`;
-
   // });
 
   if (called && loading)

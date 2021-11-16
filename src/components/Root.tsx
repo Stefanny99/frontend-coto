@@ -25,13 +25,6 @@ const Root = () => {
   }, []);
 
   return (
-    //<Routes>
-    //  <Route path="/login" element={<Login />} />
-    //  <Route path="/socios" element={<Socios />} />
-    //  <Route path="/inventario" element={<Inventario />} />
-    //  <Route path="*" element={<h1>404 - PAGE NOT FOUND</h1>} />
-    //</Routes>
-
     <>
       {authenticated === undefined ? (
         <h1>cargando...</h1>
