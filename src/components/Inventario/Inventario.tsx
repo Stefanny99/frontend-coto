@@ -35,8 +35,6 @@ const Inventario = () => {
   });
 
   useEffect(() => {
-    // Update the document title using the browser API
-    //document.title = `You clicked ${count} times`;
     (function () {
       var forms = document.querySelectorAll(".needs-validation");
 
