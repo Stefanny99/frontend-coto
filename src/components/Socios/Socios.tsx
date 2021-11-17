@@ -62,8 +62,6 @@ const Socios = () => {
     },
   });
 
-  //var socios = new Map();
-
   const { called, loading, error } = useQuery(OBTENER_SOCIOS, {
     onCompleted: ({ socios }) => {
       setSocios(socios);
@@ -77,34 +75,7 @@ const Socios = () => {
     });
   };
 
-  // TODO: Error handling del formulario
-  // (function () {
-  // 	var forms = document.querySelectorAll('.needs-validation')
-
-  // 	Array.prototype.slice.call(forms)
-  // 	  .forEach(function (form) {
-  // 		form.addEventListener('submit', function (event) {
-  // 		  if (!form.checkValidity()) {
-  // 			event.preventDefault()
-  // 			event.stopPropagation()
-  // 		  }
-
-  // 		  form.classList.add('was-validated')
-  // 		}, false)
-  // 	  })
-
-  // })();
-  // TODO: Cuando se abra el editar mostarar los datos en el modal
-  // var edit = document.getElementById('edit');
-  // edit!.addEventListener('show.bs.modal', function (event : any) {
-  // 	var button = event.relatedTarget;
-  // 	var id = button.getAttribute('data-bs-id')
-  // 	var socio = socios.get(id);
-  // 	var title = document.getElementById('addModalLabel');
-  // 	title!.innerHTML = `Editar ${socio.nombre}`;
-
-  // });
-
+  
   if (called && loading)
     return (
       <div className="spinner-border" role="status">

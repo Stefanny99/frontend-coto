@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const OBTENER_INVENTARIO = gql`
   query ObtenerInventario {
-    obtenerInventario {
+    inventario: obtenerInventario {
       id
       codigo
       nombre
@@ -20,7 +20,9 @@ export const OBTENER_INVENTARIO = gql`
 
 export const REGISTRAR_INVENTARIO = gql`
   mutation registrarInventario($inventario: InventarioInput!) {
-    registrado: registrarInventario(inventario: $inventario)
+    registrado: registrarInventario(inventario: $inventario){
+      id
+    }
   }
 `;
 
