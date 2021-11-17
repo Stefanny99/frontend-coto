@@ -13,6 +13,7 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import { OBTENER_USUARIO } from "../CRUD/usuario";
 import ClienteMenu from "./ClienteMenu";
 import ClienteProductos from "./ClienteProductos";
+import Inventario from "./Inventario";
 
 const Root = () => {
   const {
@@ -47,7 +48,8 @@ const Root = () => {
       ) : (
         <Switch>
           <PublicRoute exact path="/login" isAuthenticated={authenticated}>
-            <ClienteProductos />
+            {/*<ClienteProductos />*/}
+            <Inventario />
           </PublicRoute>
           {/*<PublicRoute exact path="/register" isAuthenticated={authenticated}>
             <Register />

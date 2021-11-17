@@ -92,7 +92,7 @@ const Menu = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <FontAwesomeIcon icon={faUser} className="me-2" /> {user!.nombre}
+            <FontAwesomeIcon icon={faUser} className="me-2" /> {user?.nombre}
           </button>
           <ul
             className="dropdown-menu dropdown-menu-dark"
