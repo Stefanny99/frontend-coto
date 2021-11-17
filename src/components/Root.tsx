@@ -11,6 +11,8 @@ import "./styles.scss";
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import { OBTENER_USUARIO } from "../CRUD/usuario";
+import ClienteMenu from "./ClienteMenu";
+import ClienteProductos from "./ClienteProductos";
 
 const Root = () => {
   const {
@@ -35,11 +37,17 @@ const Root = () => {
   return (
     <>
       {authenticated === undefined ? (
-        <h1>cargando...</h1>
+        <div className="vw-100 vh-100">
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-grow text-primary" role="status">
+              <span>Loading...</span>
+            </div>
+          </div>
+        </div>
       ) : (
         <Switch>
           <PublicRoute exact path="/login" isAuthenticated={authenticated}>
-            <Login />
+            <ClienteProductos />
           </PublicRoute>
           {/*<PublicRoute exact path="/register" isAuthenticated={authenticated}>
             <Register />

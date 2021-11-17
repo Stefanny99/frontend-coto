@@ -13,13 +13,13 @@ const Ordenes = () => {
     state: { authenticated },
   } = useGlobalState();
 
-  var ordenes = new Map();
-
+  // var ordenes = new Map();
+  
   const { called, loading, data, error } = useQuery(OBTENER_INVENTARIO, {
     onCompleted: (data) => {
       console.log(data);
       data.obtenerInventario.forEach((d) => {
-        ordenes.set(d.id, d);
+        // ordenes.set(d.id, d);
       });
     },
   });
