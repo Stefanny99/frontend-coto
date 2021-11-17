@@ -11,8 +11,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery } from "@apollo/client";
 import { OBTENER_SOCIOS, REGISTRAR_SOCIO } from "../../CRUD/socio";
-import { useGlobalState } from "../../GlobalStateProvider";
 import { Formik, Field, ErrorMessage } from "formik";
+import { useState } from "react";
 import swal from "sweetalert";
 
 const Socios = () => {
@@ -22,9 +22,22 @@ const Socios = () => {
     estado: "A",
   };
 
+  interface Socio {
+    id: string;
+    nombre: string;
+    cedula: string;
+    estado: string;
+  }
+  const [socios, setSocios] = useState<Socio[]>([]);
+  const [nuevoSocio, setNuevoSocio] = useState<Socio>({
+    ...initialState,
+    id: "",
+  });
+
   const [registrarSocios] = useMutation(REGISTRAR_SOCIO, {
     onCompleted: ({ registrado }) => {
       if (registrado) {
+        setSocios((prev) => [...prev, nuevoSocio]);
         swal({
           title: "¡Registrado!",
           text: "Socio registrado exitosamente.",
@@ -49,22 +62,19 @@ const Socios = () => {
     },
   });
 
-  const {
-    state: { authenticated },
-  } = useGlobalState();
+  //var socios = new Map();
 
-  var socios = new Map();
-
-  const { called, loading, data, error } = useQuery(OBTENER_SOCIOS, {
-    onCompleted: (data) => {
-      data.test.forEach((d) => {
-        socios.set(d.id, d);
-      });
+  const { called, loading, error } = useQuery(OBTENER_SOCIOS, {
+    onCompleted: ({ socios }) => {
+      setSocios(socios);
     },
   });
 
   const handleSubmit = (values) => {
-    registrarSocios({ variables: { socio: { ...values } } });
+    setNuevoSocio({ ...values, cedula: values.cedula.toString() });
+    registrarSocios({
+      variables: { socio: nuevoSocio },
+    });
   };
 
   // TODO: Error handling del formulario
@@ -124,7 +134,7 @@ const Socios = () => {
                     <div className="col-md-4">
                       <div className="d-flex flex-column">
                         <h1 className="text-primary fw-bold display-5">
-                          {data?.test.length}
+                          {socios?.length}
                         </h1>
                         <small className="text-muted">Socios</small>
                       </div>
@@ -176,7 +186,7 @@ const Socios = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {data?.test.map(({ id, cedula, nombre, estado }) => (
+                        {socios?.map(({ id, cedula, nombre, estado }) => (
                           <tr key={id}>
                             <td className="align-middle fw-bold text-muted">
                               {id}
@@ -330,7 +340,7 @@ const Socios = () => {
                               className="invalid-feedback"
                             />
                             <div id="cedulaHelp" className="form-text">
-                              Sin guines o espacios eg.112345678
+                              Sin guiones o espacios p.ej 112345678
                             </div>
                             <div className="valid-feedback">
                               Formato Correcto

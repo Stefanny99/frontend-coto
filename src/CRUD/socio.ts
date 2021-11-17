@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const OBTENER_SOCIOS = gql`
   query obtenerSocios {
-    test: obtenerSocios {
+    socios: obtenerSocios {
       id
       cedula
       nombre
