@@ -34,8 +34,8 @@ const Inventario = () => {
     codigo: "",
     nombre: "",
     descripcion: "",
-    precio: "",
-    cantidad: "",
+    precio: 0,
+    cantidad: 0,
     imagen: "",
     whatsapp: "",
     correo: "",
@@ -47,8 +47,8 @@ const Inventario = () => {
     codigo: string;
     nombre: string;
     descripcion: string;
-    precio: string;
-    cantidad: string;
+    precio: number;
+    cantidad: number;
     imagen: string;
     whatsapp: string;
     correo: string;
