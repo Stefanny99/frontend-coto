@@ -6,7 +6,7 @@ import { GlobalStateProvider } from "./GlobalStateProvider";
 
 const client = new ApolloClient({
   uri: "  https://backend-coto.herokuapp.com/",
-  cache: new InMemoryCache({ addTypename: false }),
+  cache: new InMemoryCache(),
 });
 
 render(

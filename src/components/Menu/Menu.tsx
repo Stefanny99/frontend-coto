@@ -16,11 +16,11 @@ const Menu = () => {
   const {
     state: { user },
   } = useGlobalState();
-  const [_, __, removeCookie] = useCookies(["userID", "authenticated"]);
+  const [_, __, removeCookie] = useCookies(["userID", "auth"]);
   const { setState } = useGlobalState();
   const logout = () => {
     removeCookie("userID");
-    removeCookie("authenticated");
+    removeCookie("auth");
     setState({ authenticated: false, user: undefined });
     history.push("/login");
   };

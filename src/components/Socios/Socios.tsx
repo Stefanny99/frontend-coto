@@ -10,11 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery } from "@apollo/client";
-import {
-  EDITAR_SOCIO,
-  OBTENER_SOCIOS,
-  REGISTRAR_SOCIO,
-} from "../../CRUD/socio";
+import { OBTENER_SOCIOS, REGISTRAR_SOCIO } from "../../CRUD/socio";
 import { Formik, Field, ErrorMessage } from "formik";
 import { useState } from "react";
 import swal from "sweetalert";
@@ -33,15 +29,15 @@ const Socios = () => {
     estado: string;
   }
   const [socios, setSocios] = useState<Socio[]>([]);
-  const [socioActual, setSocioActual] = useState<Socio>({
+  const [nuevoSocio, setNuevoSocio] = useState<Socio>({
     ...initialState,
     id: "",
   });
 
-  const [registrarSocio] = useMutation(REGISTRAR_SOCIO, {
+  const [registrarSocios] = useMutation(REGISTRAR_SOCIO, {
     onCompleted: ({ socio: { id } }) => {
       if (id) {
-        setSocios((prev) => [...prev, { ...socioActual, id }]);
+        setSocios((prev) => [...prev, { ...nuevoSocio, id }]);
         swal({
           title: "¡Registrado!",
           text: "Socio registrado exitosamente.",
@@ -66,40 +62,6 @@ const Socios = () => {
     },
   });
 
-  const [editarSocio] = useMutation(EDITAR_SOCIO, {
-    onCompleted: ({ editado }) => {
-      if (editado) {
-        setSocios((prev) =>
-          prev.map((socio) =>
-            socio.id === socioActual.id
-              ? { ...socio, estado: socioActual.estado }
-              : socio
-          )
-        );
-        swal({
-          title: "¡Editado!",
-          text: "Socio editado exitosamente.",
-          icon: "success",
-          timer: 5000,
-        });
-      } else
-        swal({
-          title: "Error!",
-          text: "No se pudo editar. Por favor inténtelo nuevamente.",
-          icon: "error",
-          timer: 5000,
-        });
-    },
-    onError: ({ message }) => {
-      swal({
-        title: "¡Error!",
-        text: message,
-        icon: "error",
-        timer: 5000,
-      });
-    },
-  });
-
   const { called, loading, error } = useQuery(OBTENER_SOCIOS, {
     onCompleted: ({ socios }) => {
       setSocios(socios);
@@ -107,46 +69,13 @@ const Socios = () => {
   });
 
   const handleSubmit = (values) => {
-    setSocioActual({ ...values, cedula: values.cedula.toString() });
-    registrarSocio({
-      variables: { socio: socioActual },
+    setNuevoSocio({ ...values, cedula: values.cedula.toString() });
+    registrarSocios({
+      variables: { socio: nuevoSocio },
     });
   };
 
-  const estadoSocio = () => {
-    editarSocio({
-      variables: { socio: { ...socioActual } },
-    });
-  };
-
-  // TODO: Error handling del formulario
-  // (function () {
-  // 	var forms = document.querySelectorAll('.needs-validation')
-
-  // 	Array.prototype.slice.call(forms)
-  // 	  .forEach(function (form) {
-  // 		form.addEventListener('submit', function (event) {
-  // 		  if (!form.checkValidity()) {
-  // 			event.preventDefault()
-  // 			event.stopPropagation()
-  // 		  }
-
-  // 		  form.classList.add('was-validated')
-  // 		}, false)
-  // 	  })
-
-  // })();
-  // TODO: Cuando se abra el editar mostarar los datos en el modal
-  // var edit = document.getElementById('edit');
-  // edit!.addEventListener('show.bs.modal', function (event : any) {
-  // 	var button = event.relatedTarget;
-  // 	var id = button.getAttribute('data-bs-id')
-  // 	var socio = socios.get(id);
-  // 	var title = document.getElementById('addModalLabel');
-  // 	title!.innerHTML = `Editar ${socio.nombre}`;
-
-  // });
-
+  
   if (called && loading)
     return (
       <div className="spinner-border" role="status">
@@ -228,38 +157,35 @@ const Socios = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {socios?.map((socio) => (
-                          <tr key={socio.id}>
+                        {socios?.map(({ id, cedula, nombre, estado }) => (
+                          <tr key={id}>
                             <td className="align-middle fw-bold text-muted">
-                              {socio.id}
+                              {id}
                             </td>
-                            <td className="align-middle fw-bold ">
-                              {socio.cedula}
-                            </td>
+                            <td className="align-middle fw-bold ">{cedula}</td>
                             <td className="align-middle fw-bold text-muted">
-                              {socio.nombre}
+                              {nombre}
                             </td>
                             <td className="align-middle">
                               <h5 className="mb-0">
                                 <span
                                   className={`badge bg-${
-                                    socio.estado === "A" ? "success" : "danger"
+                                    estado === "A" ? "success" : "danger"
                                   }`}
                                 >
-                                  {socio.estado === "A" ? "Activo" : "Inactivo"}
+                                  {estado === "A" ? "Activo" : "Inactivo"}
                                 </span>
                               </h5>
                             </td>
                             <td
                               className="align-middle"
-                              data-bs-id={socio.id}
+                              data-bs-id={id}
                               data-bs-toggle="modal"
                               data-bs-target="#edit"
                             >
                               <button
                                 type="button"
                                 className="btn btn-light btn-c"
-                                onClick={() => setSocioActual(socio)}
                               >
                                 <FontAwesomeIcon icon={faEllipsisV} />
                               </button>
@@ -294,7 +220,7 @@ const Socios = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <h4>{`Socio: ${socioActual.nombre}`}</h4>
+                  <h4>Socio:</h4>
                   {/*<div className="row">
 										<div className="col-md-6">
 											<div className="form-group">
@@ -311,27 +237,13 @@ const Socios = () => {
                   <div className="">
                     <small className="mb-0 me-4 d-block">Estado</small>
                     <label className="switch-cus" htmlFor="estadoSwitch">
-                      <input
-                        type="checkbox"
-                        id="estadoSwitch"
-                        checked={socioActual.estado === "A" ? true : false}
-                        onChange={({ target: { checked } }) =>
-                          setSocioActual((prev) => ({
-                            ...prev,
-                            estado: checked ? "A" : "I",
-                          }))
-                        }
-                      />
+                      <input type="checkbox" id="estadoSwitch" />
                       <span className="slider-cus round-cus"></span>
                     </label>
                   </div>
                 </div>
                 <div className="modal-footer border-0">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => estadoSocio()}
-                  >
+                  <button type="button" className="btn btn-primary">
                     Salvar Cambios
                   </button>
                 </div>
