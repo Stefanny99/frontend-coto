@@ -22,6 +22,8 @@ import "tippy.js/dist/tippy.css"; // optional
 import swal from "sweetalert";
 import { Formik, Field, ErrorMessage, setIn } from "formik";
 import { useState } from "react";
+import firebase from "../../firebase";
+import storage from "../../firebase";
 
 const Inventario = () => {
   const {
@@ -54,15 +56,16 @@ const Inventario = () => {
   }
 
   const [inventario, setInventario] = useState<Inventario[]>([]);
-  const [nuevoInventario, setNuevoInventario] = useState<Inventario>({
+  const [inventarioActual, setInventarioActual] = useState<Inventario>({
     ...initialState,
     id: "",
   });
+  const [files, setFiles] = useState<any>();
 
   const [registrarInventario] = useMutation(REGISTRAR_INVENTARIO, {
     onCompleted: ({ registrado: { id } }) => {
       if (id) {
-        setInventario((prev) => [...prev, { ...nuevoInventario, id }]);
+        setInventario((prev) => [...prev, { ...inventarioActual, id }]);
         swal({
           title: "¡Registrado!",
           text: "Producto registrado exitosamente.",
@@ -88,11 +91,15 @@ const Inventario = () => {
   });
 
   const handleSubmit = (values) => {
-    setNuevoInventario({ ...values, codigo: values.codigo.toString() });
-    console.log(nuevoInventario);
-    registrarInventario({
-      variables: { registrado: nuevoInventario },
-    });
+    setInventarioActual(values);
+    console.log(inventarioActual, values);
+    if (files && files[0]) {
+      handleUpload(files[0]);
+    } else {
+      registrarInventario({
+        variables: { inventario: inventarioActual },
+      });
+    }
   };
 
   const { called, loading, error } = useQuery(OBTENER_INVENTARIO, {
@@ -122,18 +129,6 @@ const Inventario = () => {
     })();
   });
 
-  // TODO: Error handling del formulario
-
-  // TODO: Cuando se abra el editar mostarar los datos en el modal
-  // var edit = document.getElementById('edit');
-  // edit!.addEventListener('show.bs.modal', function (event : any) {
-  // 	var button = event.relatedTarget;
-  // 	var id = button.getAttribute('data-bs-id')
-  // 	var inventario = inventario.get(id);
-  // 	var title = document.getElementById('addModalLabel');
-  // 	title!.innerHTML = `Editar ${socio.nombre}`;
-  // });
-
   if (called && loading)
     return (
       <div className="spinner-border" role="status">
@@ -141,6 +136,37 @@ const Inventario = () => {
       </div>
     );
   if (error) return <p>Error :(</p>;
+
+  const handleUpload = (file) => {
+    var uploadTask = storage
+      .ref()
+      .child("inventario/" + file?.name)
+      .put(file);
+    uploadTask.on(
+      "state_changed",
+      function (snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      function (error) {
+        swal({
+          title: "Error!",
+          text: "Ocurrió un error al subir la imagen. Por favor inténtelo nuevamente.",
+          icon: "error",
+          timer: 5000,
+        });
+      },
+      function () {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          registrarInventario({
+            variables: {
+              inventario: { ...inventarioActual, imagen: downloadURL },
+            },
+          });
+        });
+      }
+    );
+  };
 
   return (
     <div className="d-flex flex-column h-100">
@@ -203,7 +229,7 @@ const Inventario = () => {
                         <FontAwesomeIcon icon={faHashtag} />
                       </th>
                       <th>
-                        <FontAwesomeIcon icon={faBarcode} /> Codigo
+                        <FontAwesomeIcon icon={faBarcode} /> Código
                       </th>
                       <th>Nombre</th>
                       <th>Cantidad</th>
@@ -251,7 +277,11 @@ const Inventario = () => {
                           data-bs-toggle="modal"
                           data-bs-target="#edit"
                         >
-                          <button type="button" className="btn btn-light btn-c">
+                          <button
+                            type="button"
+                            className="btn btn-light btn-c"
+                            onClick={() => setInventarioActual(item)}
+                          >
                             <FontAwesomeIcon icon={faEllipsisV} />
                           </button>
                         </td>
@@ -341,10 +371,9 @@ const Inventario = () => {
                           htmlFor="codigoLabel"
                           className="form-label fw-bold"
                         >
-                          Codigo
+                          Código
                         </label>
                         <Field
-                          type="number"
                           className="form-control"
                           id="codigoLabel"
                           name="codigo"
@@ -384,21 +413,21 @@ const Inventario = () => {
                       </div>
                       <div className="mb-3">
                         <label
-                          htmlFor="descripcionLabel"
+                          htmlFor="correoLabel"
                           className="form-label fw-bold"
                         >
-                          Descripcion
+                          Correo
                         </label>
                         <Field
-                          type="text"
+                          type="email"
                           className="form-control"
-                          id="descripcionLabel"
-                          name="descripcion"
+                          id="correoLabel"
+                          name="correo"
                           required
                         />
                         <ErrorMessage
                           component="div"
-                          name="descripcion"
+                          name="correo"
                           className="invalid-feedback"
                         />
                         <div className="invalid-feedback">
@@ -455,21 +484,21 @@ const Inventario = () => {
                       </div>
                       <div className="mb-3">
                         <label
-                          htmlFor="imagenLabel"
+                          htmlFor="descripcionLabel"
                           className="form-label fw-bold"
                         >
-                          Imagen
+                          Descripcion
                         </label>
                         <Field
                           type="text"
                           className="form-control"
-                          id="imagenLabel"
-                          name="imagen"
+                          id="descripcionLabel"
+                          name="descripcion"
                           required
                         />
                         <ErrorMessage
                           component="div"
-                          name="imagen"
+                          name="descripcion"
                           className="invalid-feedback"
                         />
                         <div className="invalid-feedback">
@@ -501,26 +530,35 @@ const Inventario = () => {
                       </div>
                       <div className="mb-3">
                         <label
-                          htmlFor="correoLabel"
+                          htmlFor="formFile"
                           className="form-label fw-bold"
                         >
-                          Correo
+                          Imagen
                         </label>
-                        <Field
-                          type="email"
+                        <input
                           className="form-control"
-                          id="correoLabel"
-                          name="correo"
+                          placeholder="Selecciona un archivo"
+                          type="file"
+                          id="formFile"
+                          accept="image/*"
+                          onChange={({ target: { files } }) => setFiles(files)}
+                        ></input>
+
+                        {/*<Field
+                          type="text"
+                          className="form-control"
+                          id="imagenLabel"
+                          name="imagen"
                           required
                         />
                         <ErrorMessage
                           component="div"
-                          name="correo"
+                          name="imagen"
                           className="invalid-feedback"
                         />
                         <div className="invalid-feedback">
                           Formato Incorrecto
-                        </div>
+                        </div>*/}
                       </div>
                     </div>
                   </form>
