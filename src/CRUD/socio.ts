@@ -13,7 +13,9 @@ export const OBTENER_SOCIOS = gql`
 
 export const REGISTRAR_SOCIO = gql`
   mutation registrarSocio($socio: SocioInput!) {
-    registrado: registrarSocio(socio: $socio)
+    socio: registrarSocio(socio: $socio) {
+      id
+    }
   }
 `;
 

@@ -35,9 +35,9 @@ const Socios = () => {
   });
 
   const [registrarSocios] = useMutation(REGISTRAR_SOCIO, {
-    onCompleted: ({ registrado }) => {
-      if (registrado) {
-        setSocios((prev) => [...prev, nuevoSocio]);
+    onCompleted: ({ socio: { id } }) => {
+      if (id) {
+        setSocios((prev) => [...prev, { ...nuevoSocio, id }]);
         swal({
           title: "¡Registrado!",
           text: "Socio registrado exitosamente.",
