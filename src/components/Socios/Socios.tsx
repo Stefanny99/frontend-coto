@@ -10,7 +10,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery } from "@apollo/client";
-import { OBTENER_SOCIOS, REGISTRAR_SOCIO } from "../../CRUD/socio";
+import {
+  EDITAR_SOCIO,
+  OBTENER_SOCIOS,
+  REGISTRAR_SOCIO,
+} from "../../CRUD/socio";
 import { Formik, Field, ErrorMessage } from "formik";
 import { useState } from "react";
 import swal from "sweetalert";
@@ -29,7 +33,7 @@ const Socios = () => {
     estado: string;
   }
   const [socios, setSocios] = useState<Socio[]>([]);
-  const [nuevoSocio, setNuevoSocio] = useState<Socio>({
+  const [socioActual, setSocioActual] = useState<Socio>({
     ...initialState,
     id: "",
   });
@@ -37,7 +41,7 @@ const Socios = () => {
   const [registrarSocios] = useMutation(REGISTRAR_SOCIO, {
     onCompleted: ({ socio: { id } }) => {
       if (id) {
-        setSocios((prev) => [...prev, { ...nuevoSocio, id }]);
+        setSocios((prev) => [...prev, { ...socioActual, id }]);
         swal({
           title: "¡Registrado!",
           text: "Socio registrado exitosamente.",
@@ -62,6 +66,40 @@ const Socios = () => {
     },
   });
 
+  const [editarSocio] = useMutation(EDITAR_SOCIO, {
+    onCompleted: ({ editado }) => {
+      if (editado) {
+        setSocios((prev) =>
+          prev.map((socio) =>
+            socio.id === socioActual.id
+              ? { ...socio, estado: socioActual.estado }
+              : socio
+          )
+        );
+        swal({
+          title: "¡Editado!",
+          text: "Socio editado exitosamente.",
+          icon: "success",
+          timer: 5000,
+        });
+      } else
+        swal({
+          title: "Error!",
+          text: "No se pudo editar. Por favor inténtelo nuevamente.",
+          icon: "error",
+          timer: 5000,
+        });
+    },
+    onError: ({ message }) => {
+      swal({
+        title: "¡Error!",
+        text: message,
+        icon: "error",
+        timer: 5000,
+      });
+    },
+  });
+
   const { called, loading, error } = useQuery(OBTENER_SOCIOS, {
     onCompleted: ({ socios }) => {
       setSocios(socios);
@@ -69,13 +107,18 @@ const Socios = () => {
   });
 
   const handleSubmit = (values) => {
-    setNuevoSocio({ ...values, cedula: values.cedula.toString() });
+    setSocioActual({ ...values, cedula: values.cedula.toString() });
     registrarSocios({
-      variables: { socio: nuevoSocio },
+      variables: { socio: socioActual },
     });
   };
 
-  
+  const cambiarEstadoSocio = () => {
+    editarSocio({
+      variables: { socio: { ...socioActual } },
+    });
+  };
+
   if (called && loading)
     return (
       <div className="spinner-border" role="status">
@@ -157,35 +200,38 @@ const Socios = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {socios?.map(({ id, cedula, nombre, estado }) => (
-                          <tr key={id}>
+                        {socios?.map((socio) => (
+                          <tr key={socio.id}>
                             <td className="align-middle fw-bold text-muted">
-                              {id}
+                              {socio.id}
                             </td>
-                            <td className="align-middle fw-bold ">{cedula}</td>
+                            <td className="align-middle fw-bold ">
+                              {socio.cedula}
+                            </td>
                             <td className="align-middle fw-bold text-muted">
-                              {nombre}
+                              {socio.nombre}
                             </td>
                             <td className="align-middle">
                               <h5 className="mb-0">
                                 <span
                                   className={`badge bg-${
-                                    estado === "A" ? "success" : "danger"
+                                    socio.estado === "A" ? "success" : "danger"
                                   }`}
                                 >
-                                  {estado === "A" ? "Activo" : "Inactivo"}
+                                  {socio.estado === "A" ? "Activo" : "Inactivo"}
                                 </span>
                               </h5>
                             </td>
                             <td
                               className="align-middle"
-                              data-bs-id={id}
+                              data-bs-id={socio.id}
                               data-bs-toggle="modal"
                               data-bs-target="#edit"
                             >
                               <button
                                 type="button"
                                 className="btn btn-light btn-c"
+                                onClick={() => setSocioActual(socio)}
                               >
                                 <FontAwesomeIcon icon={faEllipsisV} />
                               </button>
@@ -220,7 +266,7 @@ const Socios = () => {
                   ></button>
                 </div>
                 <div className="modal-body">
-                  <h4>Socio:</h4>
+                  <h4>{`Socio: ${socioActual.nombre}`}</h4>
                   {/*<div className="row">
 										<div className="col-md-6">
 											<div className="form-group">
@@ -237,7 +283,17 @@ const Socios = () => {
                   <div className="">
                     <small className="mb-0 me-4 d-block">Estado</small>
                     <label className="switch-cus" htmlFor="estadoSwitch">
-                      <input type="checkbox" id="estadoSwitch" />
+                      <input
+                        type="checkbox"
+                        id="estadoSwitch"
+                        checked={socioActual.estado === "A" ? true : false}
+                        onChange={({ target: { checked } }) =>
+                          setSocioActual((prev) => ({
+                            ...prev,
+                            estado: checked ? "A" : "I",
+                          }))
+                        }
+                      />
                       <span className="slider-cus round-cus"></span>
                     </label>
                   </div>
