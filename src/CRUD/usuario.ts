@@ -6,6 +6,16 @@ export const LOGIN = gql`
       id
       nombre
       rol
+      pedidos {
+        id
+        cantidad
+        estado
+        producto {
+          id
+          precio
+          nombre
+        }
+      }
     }
   }
 `;
@@ -16,6 +26,16 @@ export const OBTENER_USUARIO = gql`
       id
       nombre
       rol
+      pedidos {
+        id
+        cantidad
+        estado
+        producto {
+          id
+          precio
+          nombre
+        }
+      }
     }
   }
 `;

@@ -11,13 +11,9 @@ import "./styles.scss";
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import { OBTENER_USUARIO } from "../CRUD/usuario";
-import ClienteMenu from "./ClienteMenu";
-import ClienteProductos from "./ClienteProductos";
-import Inventario from "./Inventario";
-
 const Root = () => {
   const {
-    state: { authenticated },
+    state: { authenticated, user },
     setState,
   } = useGlobalState();
 
@@ -48,13 +44,13 @@ const Root = () => {
       ) : (
         <Switch>
           <PublicRoute exact path="/login" isAuthenticated={authenticated}>
-            <ClienteProductos />
+            <Login />
           </PublicRoute>
           {/*<PublicRoute exact path="/register" isAuthenticated={authenticated}>
             <Register />
           </PublicRoute>*/}
           <PrivateRoute path="/" isAuthenticated={authenticated}>
-            <ProtectedRoutes />
+            <ProtectedRoutes rol={user?.rol} />
           </PrivateRoute>
           <Route path="*">
             <Redirect to="/" />

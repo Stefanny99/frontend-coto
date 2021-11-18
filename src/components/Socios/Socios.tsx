@@ -299,7 +299,11 @@ const Socios = () => {
                   </div>
                 </div>
                 <div className="modal-footer border-0">
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => cambiarEstadoSocio()}
+                  >
                     Salvar Cambios
                   </button>
                 </div>
