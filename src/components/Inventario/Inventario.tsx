@@ -20,9 +20,8 @@ import Header from "../Header";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 import swal from "sweetalert";
-import { Formik, Field, ErrorMessage, setIn } from "formik";
+import { Formik, Field, ErrorMessage } from "formik";
 import { useState } from "react";
-import firebase from "../../firebase";
 import storage from "../../firebase";
 
 const Inventario = () => {
@@ -203,7 +202,6 @@ const Inventario = () => {
                   </div>
                 </div>
                 <div className="col-md-3">
-                  {/* add */}
                   <div className="d-grid gap-2">
                     <button
                       className="btn btn-primary"
