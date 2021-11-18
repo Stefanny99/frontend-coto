@@ -60,6 +60,13 @@ const Inventario = () => {
     id: "",
   });
   const [files, setFiles] = useState<any>();
+  const [search, setSearch] = useState('');
+
+  const onSearchChange = (event) =>{
+
+    setSearch(event.target.value);
+
+  }
 
   const [registrarInventario] = useMutation(REGISTRAR_INVENTARIO, {
     onCompleted: ({ registrado: { id } }) => {
@@ -100,6 +107,14 @@ const Inventario = () => {
       });
     }
   };
+
+  const filterInventario = (): Inventario[] => {
+    if(search.length === 0)
+      return inventario;
+    
+    const filter = inventario.filter(producto => producto.nombre.includes(search));
+    return filter;
+  }
 
   const { called, loading, error } = useQuery(OBTENER_INVENTARIO, {
     onCompleted: ({ inventario }) => {
@@ -198,6 +213,8 @@ const Inventario = () => {
                       type="text"
                       className="form-control"
                       placeholder="Buscar..."
+                      value = {search}
+                      onChange = {onSearchChange}
                     />
                   </div>
                 </div>
@@ -237,7 +254,7 @@ const Inventario = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {inventario?.map((item) => (
+                    {filterInventario().map((item) => (
                       <tr key={item.id}>
                         <td className="align-middle fw-bold text-muted">
                           {item.id}
