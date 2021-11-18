@@ -2,8 +2,8 @@ import React from "react";
 import Menu from "../Menu";
 import { faSave, faHashtag, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@apollo/client";
-import { OBTENER_INVENTARIO } from "../../CRUD/inventario";
+// import { useQuery } from "@apollo/client";
+// import { OBTENER_INVENTARIO } from "../../CRUD/inventario";
 import { useGlobalState } from "../../GlobalStateProvider";
 import Header from "../Header";
 import "tippy.js/dist/tippy.css"; // optional
@@ -15,22 +15,22 @@ const Ordenes = () => {
 
   // var ordenes = new Map();
   
-  const { called, loading, data, error } = useQuery(OBTENER_INVENTARIO, {
-    onCompleted: (data) => {
-      console.log(data);
-      data.obtenerInventario.forEach((d) => {
-        // ordenes.set(d.id, d);
-      });
-    },
-  });
+  // const { called, loading, data, error } = useQuery(OBTENER_INVENTARIO, {
+  //   onCompleted: (data) => {
+  //     console.log(data);
+  //     data.obtenerInventario.forEach((d) => {
+  //       // ordenes.set(d.id, d);
+  //     });
+  //   },
+  // });
 
-  if (called && loading)
-    return (
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    );
-  if (error) return <p>Error :(</p>;
+  // if (called && loading)
+  //   return (
+  //     <div className="spinner-border" role="status">
+  //       <span className="visually-hidden">Loading...</span>
+  //     </div>
+  //   );
+  // if (error) return <p>Error :(</p>;
 
   return (
     <>
@@ -77,85 +77,179 @@ const Ordenes = () => {
                   </div>
                 </div>
                 <div className="bg-white shadow-primary rounded-15 mb-3">
-                  <div className="tableHolder mt-4">
-                    <table
-                      className="table table-hover table-borderless table-striped"
-                      id="table"
-                    >
-                      <thead className="table-primary-custom">
-                        <tr>
-                          <th>
-                            <FontAwesomeIcon icon={faHashtag} />
-                          </th>
-                          <th>Cliente</th>
-                          <th>Producto</th>
-                          <th>Precio</th>
-                          <th>Estado</th>
-                          <th>Edit</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {/* {data?.obtenerInventario.map(
-                          ({
-                            id,
-                            codigo,
-                            nombre,
-                            precio,
-                            cantidad,
-                            imagen,
-                            estado,
-                            descripcion,
-                          }) => (
-                            <tr key={id}>
-                              <td className="align-middle fw-bold text-muted">
-                                {id}
-                              </td>
-                              <td className="align-middle text-primary">
-                                {codigo}
-                              </td>
-                              <td className="align-middle fw-bold text-muted">
-                                <Tippy content={<span>{descripcion}</span>}>
-                                  <span>{nombre}</span>
-                                </Tippy>
-                              </td>
-                              <td className="align-middle fw-bold text-muted">
-                                {cantidad}
-                              </td>
-                              <td className="align-middle">
-                                <h5 className="mb-0">
-                                  <span
-                                    className={`badge bg-${
-                                      estado === "A" ? "success" : "danger"
-                                    }`}
-                                  >
-                                    {estado === "A" ? "Activo" : "Inactivo"}
-                                  </span>
-                                </h5>
-                              </td>
-                              <td className="align-middle fw-bold text-muted">
-                                <Tippy content={<span>Colones</span>}>
-                                  <span>₡{precio}</span>
-                                </Tippy>
-                              </td>
-                              <td
-                                className="align-middle"
-                                data-bs-id={id}
-                                data-bs-toggle="modal"
-                                data-bs-target="#edit"
-                              >
-                                <button
-                                  type="button"
-                                  className="btn btn-light btn-c"
-                                >
-                                  <FontAwesomeIcon icon={faEllipsisV} />
-                                </button>
-                              </td>
+                  <nav>
+                    <div className="nav nav-tabs bg-light" id="nav-tab" role="tablist">
+                      <button className="nav-link active" id="nav-productos-tab" data-bs-toggle="tab" data-bs-target="#nav-productos" 
+                      type="button" role="tab" aria-controls="nav-productos" aria-selected="true">Productos</button>
+                      <button className="nav-link" id="nav-servicios-tab" data-bs-toggle="tab" data-bs-target="#nav-servicios" 
+                      type="button" role="tab" aria-controls="nav-servicios" aria-selected="false">Servicios</button>
+                    </div>
+                  </nav>
+                  <div className="tab-content" id="nav-tabContent">
+                    <div className="tab-pane fade show active" id="nav-productos" role="tabpanel" aria-labelledby="nav-productos-tab">
+                      <div className="tableHolder mt-4">
+                        <table
+                          className="table table-hover table-borderless table-striped"
+                          id="table"
+                        >
+                          <thead className="table-primary-custom">
+                            <tr>
+                              <th>
+                                <FontAwesomeIcon icon={faHashtag} />
+                              </th>
+                              <th>Cliente</th>
+                              <th>Producto</th>
+                              <th>Precio</th>
+                              <th>Estado</th>
+                              <th>Edit</th>
                             </tr>
-                          )
-                        )} */}
-                      </tbody>
-                    </table>
+                          </thead>
+                          <tbody>
+                            {/* {data?.obtenerInventario.map(
+                              ({
+                                id,
+                                codigo,
+                                nombre,
+                                precio,
+                                cantidad,
+                                imagen,
+                                estado,
+                                descripcion,
+                              }) => (
+                                <tr key={id}>
+                                  <td className="align-middle fw-bold text-muted">
+                                    {id}
+                                  </td>
+                                  <td className="align-middle text-primary">
+                                    {codigo}
+                                  </td>
+                                  <td className="align-middle fw-bold text-muted">
+                                    <Tippy content={<span>{descripcion}</span>}>
+                                      <span>{nombre}</span>
+                                    </Tippy>
+                                  </td>
+                                  <td className="align-middle fw-bold text-muted">
+                                    {cantidad}
+                                  </td>
+                                  <td className="align-middle">
+                                    <h5 className="mb-0">
+                                      <span
+                                        className={`badge bg-${
+                                          estado === "A" ? "success" : "danger"
+                                        }`}
+                                      >
+                                        {estado === "A" ? "Activo" : "Inactivo"}
+                                      </span>
+                                    </h5>
+                                  </td>
+                                  <td className="align-middle fw-bold text-muted">
+                                    <Tippy content={<span>Colones</span>}>
+                                      <span>₡{precio}</span>
+                                    </Tippy>
+                                  </td>
+                                  <td
+                                    className="align-middle"
+                                    data-bs-id={id}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#edit"
+                                  >
+                                    <button
+                                      type="button"
+                                      className="btn btn-light btn-c"
+                                    >
+                                      <FontAwesomeIcon icon={faEllipsisV} />
+                                    </button>
+                                  </td>
+                                </tr>
+                              )
+                            )} */}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div className="tab-pane fade" id="nav-servicios" role="tabpanel" aria-labelledby="nav-servicios-tab">
+                      <div className="tableHolder mt-4">
+                        <table
+                          className="table table-hover table-borderless table-striped"
+                          id="table"
+                        >
+                          <thead className="table-primary-custom">
+                            <tr>
+                              <th>
+                                <FontAwesomeIcon icon={faHashtag} />
+                              </th>
+                              <th>Cliente</th>
+                              <th>Producto</th>
+                              <th>Precio</th>
+                              <th>Estado</th>
+                              <th>Edit</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/* {data?.obtenerInventario.map(
+                              ({
+                                id,
+                                codigo,
+                                nombre,
+                                precio,
+                                cantidad,
+                                imagen,
+                                estado,
+                                descripcion,
+                              }) => (
+                                <tr key={id}>
+                                  <td className="align-middle fw-bold text-muted">
+                                    {id}
+                                  </td>
+                                  <td className="align-middle text-primary">
+                                    {codigo}
+                                  </td>
+                                  <td className="align-middle fw-bold text-muted">
+                                    <Tippy content={<span>{descripcion}</span>}>
+                                      <span>{nombre}</span>
+                                    </Tippy>
+                                  </td>
+                                  <td className="align-middle fw-bold text-muted">
+                                    {cantidad}
+                                  </td>
+                                  <td className="align-middle">
+                                    <h5 className="mb-0">
+                                      <span
+                                        className={`badge bg-${
+                                          estado === "A" ? "success" : "danger"
+                                        }`}
+                                      >
+                                        {estado === "A" ? "Activo" : "Inactivo"}
+                                      </span>
+                                    </h5>
+                                  </td>
+                                  <td className="align-middle fw-bold text-muted">
+                                    <Tippy content={<span>Colones</span>}>
+                                      <span>₡{precio}</span>
+                                    </Tippy>
+                                  </td>
+                                  <td
+                                    className="align-middle"
+                                    data-bs-id={id}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#edit"
+                                  >
+                                    <button
+                                      type="button"
+                                      className="btn btn-light btn-c"
+                                    >
+                                      <FontAwesomeIcon icon={faEllipsisV} />
+                                    </button>
+                                  </td>
+                                </tr>
+                              )
+                            )} */}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
+                  
                 </div>
               </div>
             </div>

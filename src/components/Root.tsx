@@ -47,7 +47,7 @@ const Root = () => {
       ) : (
         <Switch>
           <PublicRoute exact path="/login" isAuthenticated={authenticated}>
-            <ClienteProductos />
+            <Login />
           </PublicRoute>
           {/*<PublicRoute exact path="/register" isAuthenticated={authenticated}>
             <Register />
