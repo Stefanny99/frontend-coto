@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery } from "@apollo/client";
-import {} from "../../CRUD/pedido";
+import { OBTENER_PEDIDOS } from "../../CRUD/pedido";
 import { Formik, Field, ErrorMessage } from "formik";
 import { useState } from "react";
 
@@ -25,7 +25,6 @@ const Ordenes = () => {
       nombre: "",
     },
   };
-
   interface Orden {
     id: string;
     cantidad: number;
@@ -37,6 +36,12 @@ const Ordenes = () => {
     };
   }
   const [ordenes, setOrdenes] = useState<Orden[]>([]);
+  const {} = useQuery(OBTENER_PEDIDOS, {
+    onCompleted: ({ pedidos }) => {
+      setOrdenes(pedidos);
+    },
+  });
+
   const [ordenActual, setOrdenActual] = useState<Orden>({
     ...initialState,
     id: "",

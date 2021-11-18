@@ -15,7 +15,7 @@ export const ELIMINAR_PEDIDO = gql`
 `;
 
 export const OBTENER_PEDIDOS = gql`
-  mutation obtenerPedidos {
+  query obtenerPedidos {
     pedidos: obtenerPedidos {
       id
       cantidad
