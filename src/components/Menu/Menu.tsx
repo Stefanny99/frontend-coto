@@ -21,7 +21,10 @@ const Menu = () => {
   const logout = () => {
     removeCookie("userID");
     removeCookie("authenticated");
-    setState({ authenticated: false, user: undefined });
+    setState({
+      authenticated: false,
+      user: { id: "0", nombre: "", pedidos: [], rol: "" },
+    });
     history.push("/login");
   };
   return (

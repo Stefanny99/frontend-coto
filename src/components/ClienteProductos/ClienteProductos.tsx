@@ -42,9 +42,14 @@ const ClienteProductos = () => {
   const [registrarPedido] = useMutation(REGISTRAR_PEDIDO, {
     onCompleted: ({ pedido: { id } }) => {
       if (id) {
-        //setState((prev) => ({
-        //  ...prev, user: {...prev.user, nombre: 'JUANAA'}
-        //}));
+        setState((prev) => ({
+          ...prev,
+          user: {
+            ...prev.user,
+            pedidos: [...prev.user.pedidos, { ...miPedido, id }],
+          },
+        }));
+
         swal({
           title: "¡Registrado!",
           text: "Pedido registrado exitosamente. ¡Revisa tu carrito!",

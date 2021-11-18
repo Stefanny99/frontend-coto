@@ -27,7 +27,10 @@ const Root = () => {
     if (cookies.authenticated) {
       obtenerUsuario({ variables: { id: cookies.userID } });
     } else {
-      setState({ authenticated: false, user: undefined });
+      setState({
+        authenticated: false,
+        user: { id: "0", nombre: "", pedidos: [], rol: "" },
+      });
     }
   }, []);
 

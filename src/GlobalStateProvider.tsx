@@ -30,8 +30,8 @@ export interface GlobalStateInterface {
 }
 
 const GlobalStateContext = createContext({
-  state: {} as Partial<GlobalStateInterface>,
-  setState: {} as Dispatch<SetStateAction<Partial<GlobalStateInterface>>>,
+  state: {} as GlobalStateInterface,
+  setState: {} as Dispatch<SetStateAction<GlobalStateInterface>>,
 });
 
 const initialState: GlobalStateInterface = {
@@ -43,7 +43,7 @@ const GlobalStateProvider = ({
   value = initialState as GlobalStateInterface,
 }: {
   children: React.ReactNode;
-  value?: Partial<GlobalStateInterface>;
+  value?: GlobalStateInterface;
 }) => {
   const [state, setState] = useState(value);
   return (
