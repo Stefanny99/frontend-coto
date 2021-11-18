@@ -13,3 +13,18 @@ export const ELIMINAR_PEDIDO = gql`
     eliminado: eliminarPedido(id: $id)
   }
 `;
+
+export const OBTENER_PEDIDOS = gql`
+  mutation obtenerPedidos {
+    pedidos: obtenerPedidos {
+      id
+      cantidad
+      estado
+      producto {
+        id
+        precio
+        nombre
+      }
+    }
+  }
+`;
