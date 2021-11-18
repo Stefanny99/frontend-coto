@@ -2,7 +2,9 @@ import { gql } from "@apollo/client";
 
 export const REGISTRAR_PEDIDO = gql`
   mutation registrarPedido($pedido: PedidoInput!) {
-    registrado: registrarPedido(pedido: $pedido)
+    pedido: registrarPedido(pedido: $pedido) {
+      id
+    }
   }
 `;
 

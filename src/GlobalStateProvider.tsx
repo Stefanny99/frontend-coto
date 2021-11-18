@@ -10,24 +10,40 @@ export interface UserEntity {
   id: string;
   nombre: string;
   rol: string;
+  pedidos: Pedido[];
+}
+
+export interface Pedido {
+  id: string;
+  cantidad: number;
+  estado: string;
+  producto: {
+    id: string;
+    precio: number;
+    nombre: string;
+  };
 }
 
 export interface GlobalStateInterface {
-  authenticated: boolean;
+  authenticated?: boolean;
   user: UserEntity;
 }
 
 const GlobalStateContext = createContext({
-  state: {} as Partial<GlobalStateInterface>,
-  setState: {} as Dispatch<SetStateAction<Partial<GlobalStateInterface>>>,
+  state: {} as GlobalStateInterface,
+  setState: {} as Dispatch<SetStateAction<GlobalStateInterface>>,
 });
+
+const initialState: GlobalStateInterface = {
+  user: { id: "0", nombre: "", pedidos: [], rol: "" },
+};
 
 const GlobalStateProvider = ({
   children,
-  value = {} as GlobalStateInterface,
+  value = initialState as GlobalStateInterface,
 }: {
   children: React.ReactNode;
-  value?: Partial<GlobalStateInterface>;
+  value?: GlobalStateInterface;
 }) => {
   const [state, setState] = useState(value);
   return (

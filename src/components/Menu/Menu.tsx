@@ -16,12 +16,15 @@ const Menu = () => {
   const {
     state: { user },
   } = useGlobalState();
-  const [_, __, removeCookie] = useCookies(["userID", "auth"]);
+  const [_, __, removeCookie] = useCookies(["userID", "authenticated"]);
   const { setState } = useGlobalState();
   const logout = () => {
     removeCookie("userID");
-    removeCookie("auth");
-    setState({ authenticated: false, user: undefined });
+    removeCookie("authenticated");
+    setState({
+      authenticated: false,
+      user: { id: "0", nombre: "", pedidos: [], rol: "" },
+    });
     history.push("/login");
   };
   return (
@@ -92,7 +95,7 @@ const Menu = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <FontAwesomeIcon icon={faUser} className="me-2" /> {user!.nombre}
+            <FontAwesomeIcon icon={faUser} className="me-2" /> {user?.nombre}
           </button>
           <ul
             className="dropdown-menu dropdown-menu-dark"

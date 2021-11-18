@@ -18,6 +18,24 @@ export const OBTENER_INVENTARIO = gql`
   }
 `;
 
+export const BUSCAR_INVENTARIO = gql`
+  query BusquedaInventario($texto: String!) {
+    inventario: busquedaInventario(busqueda: $texto) {
+      id
+      codigo
+      nombre
+      precio
+      descripcion
+      categoria
+      cantidad
+      imagen
+      estado
+      whatsapp
+      correo
+    }
+  }
+`;
+
 export const REGISTRAR_INVENTARIO = gql`
   mutation registrarInventario($inventario: InventarioInput!) {
     registrado: registrarInventario(inventario: $inventario){

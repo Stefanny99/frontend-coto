@@ -11,12 +11,9 @@ import "./styles.scss";
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import { OBTENER_USUARIO } from "../CRUD/usuario";
-import ClienteMenu from "./ClienteMenu";
-import ClienteProductos from "./ClienteProductos";
-
 const Root = () => {
   const {
-    state: { authenticated },
+    state: { authenticated, user },
     setState,
   } = useGlobalState();
 
@@ -30,7 +27,10 @@ const Root = () => {
     if (cookies.authenticated) {
       obtenerUsuario({ variables: { id: cookies.userID } });
     } else {
-      setState({ authenticated: false, user: undefined });
+      setState({
+        authenticated: false,
+        user: { id: "0", nombre: "", pedidos: [], rol: "" },
+      });
     }
   }, []);
 
@@ -53,7 +53,7 @@ const Root = () => {
             <Register />
           </PublicRoute>*/}
           <PrivateRoute path="/" isAuthenticated={authenticated}>
-            <ProtectedRoutes />
+            <ProtectedRoutes rol={user?.rol} />
           </PrivateRoute>
           <Route path="*">
             <Redirect to="/" />
