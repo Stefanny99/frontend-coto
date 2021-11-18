@@ -97,9 +97,7 @@ const Inventario = () => {
   });
 
   const handleSubmit = (values, categoria) => {
-    console.log("cat", categoria);
     setInventarioActual({ ...values, categoria });
-    console.log(inventarioActual, values);
     if (files && files[0]) {
       handleUpload(files[0]);
     } else {
@@ -731,7 +729,7 @@ const Inventario = () => {
                       handleSubmit(e);
                     }}
                     className="row g-3 needs-validation"
-                    id="formAgregar"
+                    id="formAgregarServicio"
                     noValidate
                   >
                     <div className="col-md-6">
@@ -908,7 +906,7 @@ const Inventario = () => {
               <button
                 type="submit"
                 className="btn btn-primary"
-                form="formAgregar"
+                form="formAgregarServicio"
               >
                 <FontAwesomeIcon icon={faPlus} className="me-2" />
                 Agregar
