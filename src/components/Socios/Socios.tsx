@@ -66,6 +66,22 @@ const Socios = () => {
     },
   });
 
+  const [search, setSearch] = useState('');
+
+  const onSearchChange = (event) =>{
+
+    setSearch(event.target.value);
+
+  }
+
+  const filterSocio = (): Socio[] => {
+    if(search.length === 0)
+      return socios;
+    
+    const filter = socios.filter(producto => producto.nombre.includes(search));
+    return filter;
+  }
+
   const [editarSocio] = useMutation(EDITAR_SOCIO, {
     onCompleted: ({ editado }) => {
       if (editado) {
@@ -164,6 +180,8 @@ const Socios = () => {
                           type="text"
                           className="form-control"
                           placeholder="Buscar..."
+                          value = {search}
+                          onChange = {onSearchChange}
                         />
                       </div>
                     </div>
@@ -200,7 +218,7 @@ const Socios = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {socios?.map((socio) => (
+                        {filterSocio().map((socio) => (
                           <tr key={socio.id}>
                             <td className="align-middle fw-bold text-muted">
                               {socio.id}
