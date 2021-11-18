@@ -97,13 +97,14 @@ const Inventario = () => {
   });
 
   const handleSubmit = (values, categoria) => {
-    setInventarioActual(values);
+    console.log("cat", categoria);
+    setInventarioActual({ ...values, categoria });
     console.log(inventarioActual, values);
     if (files && files[0]) {
       handleUpload(files[0]);
     } else {
       registrarInventario({
-        variables: { inventario: inventarioActual },
+        variables: { inventario: { ...inventarioActual, categoria } },
       });
     }
   };
@@ -203,15 +204,9 @@ const Inventario = () => {
                     <h1 className="text-primary fw-bold display-5">
                       {inventario?.length}
                     </h1>
-                    <small className="text-muted">Productos</small>
-                  </div>
-                </div>
-                <div className="col-md-2">
-                  <div className="d-flex flex-column">
-                    <h1 className="text-primary fw-bold display-5">
-                      {inventario?.length}
-                    </h1>
-                    <small className="text-muted">Servicios</small>
+                    <small className="text-muted">
+                      {inventario?.length > 1 ? "Datos" : "Dato"}
+                    </small>
                   </div>
                 </div>
               </div>
