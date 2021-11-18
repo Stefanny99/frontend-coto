@@ -96,7 +96,7 @@ const Inventario = () => {
     },
   });
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (values, categoria) => {
     setInventarioActual(values);
     console.log(inventarioActual, values);
     if (files && files[0]) {
@@ -528,7 +528,7 @@ const Inventario = () => {
               <Formik
                 initialValues={initialState}
                 onSubmit={async (values) => {
-                  await handleSubmit(values);
+                  await handleSubmit(values, "P");
                 }}
               >
                 {({ isSubmitting, handleSubmit }) => (
@@ -725,7 +725,7 @@ const Inventario = () => {
               <Formik
                 initialValues={initialState}
                 onSubmit={async (values) => {
-                  await handleSubmit(values);
+                  await handleSubmit(values, "S");
                 }}
               >
                 {({ isSubmitting, handleSubmit }) => (
