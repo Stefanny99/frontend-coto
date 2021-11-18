@@ -35,6 +35,7 @@ const Inventario = () => {
     descripcion: "",
     precio: 0,
     cantidad: 0,
+    categoria: "",
     imagen: "",
     whatsapp: "",
     correo: "",
@@ -48,6 +49,7 @@ const Inventario = () => {
     descripcion: string;
     precio: number;
     cantidad: number;
+    categoria: string;
     imagen: string;
     whatsapp: string;
     correo: string;
@@ -300,54 +302,60 @@ const Inventario = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filterInventario().map((item) => (
-                          <tr key={item.id}>
-                            <td className="align-middle fw-bold text-muted">
-                              {item.id}
-                            </td>
-                            <td className="align-middle text-primary">
-                              {item.codigo}
-                            </td>
-                            <td className="align-middle fw-bold text-muted">
-                              <Tippy content={<span>{item.descripcion}</span>}>
-                                <span>{item.nombre}</span>
-                              </Tippy>
-                            </td>
-                            <td className="align-middle fw-bold text-muted">
-                              {item.cantidad}
-                            </td>
-                            <td className="align-middle">
-                              <h5 className="mb-0">
-                                <span
-                                  className={`badge bg-${
-                                    item.estado === "A" ? "success" : "danger"
-                                  }`}
+                        {filterInventario()
+                          .filter((item) => item.categoria === "P")
+                          .map((item) => (
+                            <tr key={item.id}>
+                              <td className="align-middle fw-bold text-muted">
+                                {item.id}
+                              </td>
+                              <td className="align-middle text-primary">
+                                {item.codigo}
+                              </td>
+                              <td className="align-middle fw-bold text-muted">
+                                <Tippy
+                                  content={<span>{item.descripcion}</span>}
                                 >
-                                  {item.estado === "A" ? "Activo" : "Inactivo"}
-                                </span>
-                              </h5>
-                            </td>
-                            <td className="align-middle fw-bold text-muted">
-                              <Tippy content={<span>Colones</span>}>
-                                <span>₡{item.precio}</span>
-                              </Tippy>
-                            </td>
-                            <td
-                              className="align-middle"
-                              data-bs-id={item.id}
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit"
-                            >
-                              <button
-                                type="button"
-                                className="btn btn-light btn-c"
-                                onClick={() => setInventarioActual(item)}
+                                  <span>{item.nombre}</span>
+                                </Tippy>
+                              </td>
+                              <td className="align-middle fw-bold text-muted">
+                                {item.cantidad}
+                              </td>
+                              <td className="align-middle">
+                                <h5 className="mb-0">
+                                  <span
+                                    className={`badge bg-${
+                                      item.estado === "A" ? "success" : "danger"
+                                    }`}
+                                  >
+                                    {item.estado === "A"
+                                      ? "Activo"
+                                      : "Inactivo"}
+                                  </span>
+                                </h5>
+                              </td>
+                              <td className="align-middle fw-bold text-muted">
+                                <Tippy content={<span>Colones</span>}>
+                                  <span>₡{item.precio}</span>
+                                </Tippy>
+                              </td>
+                              <td
+                                className="align-middle"
+                                data-bs-id={item.id}
+                                data-bs-toggle="modal"
+                                data-bs-target="#edit"
                               >
-                                <FontAwesomeIcon icon={faEllipsisV} />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                                <button
+                                  type="button"
+                                  className="btn btn-light btn-c"
+                                  onClick={() => setInventarioActual(item)}
+                                >
+                                  <FontAwesomeIcon icon={faEllipsisV} />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>
@@ -403,51 +411,57 @@ const Inventario = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filterInventario().map((item) => (
-                          <tr key={item.id}>
-                            <td className="align-middle fw-bold text-muted">
-                              {item.id}
-                            </td>
-                            <td className="align-middle text-primary">
-                              {item.codigo}
-                            </td>
-                            <td className="align-middle fw-bold text-muted">
-                              <Tippy content={<span>{item.descripcion}</span>}>
-                                <span>{item.nombre}</span>
-                              </Tippy>
-                            </td>
-                            <td className="align-middle">
-                              <h5 className="mb-0">
-                                <span
-                                  className={`badge bg-${
-                                    item.estado === "A" ? "success" : "danger"
-                                  }`}
+                        {filterInventario()
+                          .filter((item) => item.categoria === "S")
+                          .map((item) => (
+                            <tr key={item.id}>
+                              <td className="align-middle fw-bold text-muted">
+                                {item.id}
+                              </td>
+                              <td className="align-middle text-primary">
+                                {item.codigo}
+                              </td>
+                              <td className="align-middle fw-bold text-muted">
+                                <Tippy
+                                  content={<span>{item.descripcion}</span>}
                                 >
-                                  {item.estado === "A" ? "Activo" : "Inactivo"}
-                                </span>
-                              </h5>
-                            </td>
-                            <td className="align-middle fw-bold text-muted">
-                              <Tippy content={<span>Colones</span>}>
-                                <span>₡{item.precio}</span>
-                              </Tippy>
-                            </td>
-                            <td
-                              className="align-middle"
-                              data-bs-id={item.id}
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit"
-                            >
-                              <button
-                                type="button"
-                                className="btn btn-light btn-c"
-                                onClick={() => setInventarioActual(item)}
+                                  <span>{item.nombre}</span>
+                                </Tippy>
+                              </td>
+                              <td className="align-middle">
+                                <h5 className="mb-0">
+                                  <span
+                                    className={`badge bg-${
+                                      item.estado === "A" ? "success" : "danger"
+                                    }`}
+                                  >
+                                    {item.estado === "A"
+                                      ? "Activo"
+                                      : "Inactivo"}
+                                  </span>
+                                </h5>
+                              </td>
+                              <td className="align-middle fw-bold text-muted">
+                                <Tippy content={<span>Colones</span>}>
+                                  <span>₡{item.precio}</span>
+                                </Tippy>
+                              </td>
+                              <td
+                                className="align-middle"
+                                data-bs-id={item.id}
+                                data-bs-toggle="modal"
+                                data-bs-target="#edit"
                               >
-                                <FontAwesomeIcon icon={faEllipsisV} />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                                <button
+                                  type="button"
+                                  className="btn btn-light btn-c"
+                                  onClick={() => setInventarioActual(item)}
+                                >
+                                  <FontAwesomeIcon icon={faEllipsisV} />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>
